@@ -1,4 +1,4 @@
-import java.util.Stack;
+import java.util.LinkedList;
 
 public class Balanced {
 
@@ -15,6 +15,22 @@ public class Balanced {
     }
 
     public static String isBalanced(String s){
-        
+
+        LinkedList <Character> symbolStack = new LinkedList<>();
+        char currentSymbol;
+
+        for(int i = 0; i < s.length(); i++){
+            currentSymbol = s.charAt(i);
+
+            if( currentSymbol == '{' || currentSymbol == '(' || currentSymbol == '[' ||
+                currentSymbol == '<' || currentSymbol == '¿'){
+
+                
+
+            }else{
+
+            }
+        }
     }
+
 }
