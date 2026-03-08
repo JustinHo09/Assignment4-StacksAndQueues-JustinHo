@@ -22,15 +22,56 @@ public class Balanced {
         for(int i = 0; i < s.length(); i++){
             currentSymbol = s.charAt(i);
 
-            if( currentSymbol == '{' || currentSymbol == '(' || currentSymbol == '[' ||
-                currentSymbol == '<' || currentSymbol == '¿'){
+            //opening symbol
+            if ( currentSymbol == '{' || currentSymbol == '(' || currentSymbol == '[' ||
+                currentSymbol == '<' || currentSymbol == '¿') {
 
-                
+                symbolStack.addFirst(currentSymbol);
 
-            }else{
+            // closing symbol
+            } else {
+
+                // No previous opening symbols but it's a closing one
+                if(symbolStack.peek() == null){
+                    return "NO";
+                }
+
+                if (isAPair(symbolStack.peek(), currentSymbol)){
+                    symbolStack.remove();
+                } else {
+                    return "NO";
+                }
 
             }
         }
+
+        if ( symbolStack.peek() == null ) {
+            return "YES";
+        }
+
+        return "NO";
+    }
+
+    private static boolean isAPair (char open, char close) {
+
+        if( open == '{' && close == '}' ) {
+            return true;
+
+        } else if ( open == '(' && close == ')' ) {
+            return true;
+
+        } else if ( open == '[' && close == ']' ) {
+            return true;
+
+        } else if ( open == '<' && close == '>' ) {
+            return true;
+
+        } else if ( open == '¿' && close == '?' ) {
+            return true;
+
+        }
+
+        return false;
     }
 
 }
