@@ -15,7 +15,7 @@ public class Decode {
     public static String decoder (String s) {
         String result = "";
 
-        
+
 
         return result;
     }
