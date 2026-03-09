@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 public class Decode {
 
     public static void main ( String[] args) {
@@ -13,8 +15,66 @@ public class Decode {
     }
 
     public static String decoder (String s) {
-        String result = "";
 
+        String result = "";
+        LinkedList<Character> letters = new LinkedList<>();
+        LinkedList<Integer> ks = new LinkedList<>();
+        char current;
+        int k  = 0 ;
+        int multiplier = 0;
+
+        for ( int i = 0; i < s.length(); i++) {
+
+            current = s.charAt(i);
+
+            if( isNum(current) ){
+                // one digit at a time
+                k = (k * 10) + toNum(current);
+            } else {
+
+                if( current == '[' ) {
+                    ks.addFirst(k);
+                    k=0;
+                    letters.addFirst(current);
+
+                } else if ( current == ']' ) {
+
+                    String temp = "";
+                    String repeated = "";
+                    while ( letters.peek() != null && letters.peek() != '[' ) {
+
+                        temp = letters.remove() + temp;
+                    }
+                    letters.remove();
+
+                    multiplier = ks.remove();
+                    for( int j = 0; j < multiplier; j++) {
+                        repeated = repeated + temp;
+                    }
+
+                    if( ks.peek() == null ) {
+                        result = result + repeated;
+
+                    }  else {
+                        for ( int j = 0; j < repeated.length(); j++) {
+                            letters.addFirst(repeated.charAt(j));
+                        }
+
+                    }
+
+                } else {
+
+                    if( letters.peek() == null){
+                        result = result + current;
+                    } else {
+                        letters.addFirst(current);
+                    }
+
+                }
+
+            }
+
+        }
 
 
         return result;
