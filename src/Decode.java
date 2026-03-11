@@ -2,7 +2,7 @@ import java.util.LinkedList;
 
 public class Decode {
 
-    public static void main ( String[] args) {
+    public static void main(String[] args) {
         String input1 = "3[a]2[bc]";
         System.out.println(input1);
         System.out.println(decoder(input1));
@@ -14,70 +14,52 @@ public class Decode {
         System.out.println(decoder(input3));
     }
 
-    public static String decoder (String s) {
+    public static String decoder(String s) {
 
-        String result = "";
-        LinkedList<Character> letters = new LinkedList<>();
+        LinkedList<String> letters = new LinkedList<>();
         LinkedList<Integer> ks = new LinkedList<>();
+        String currentString = "";
         char current;
-        int k  = 0 ;
-        int multiplier = 0;
+        int k = 0;
+        int multiplier;
 
-        for ( int i = 0; i < s.length(); i++) {
+        for (int i = 0; i < s.length(); i++) {
 
             current = s.charAt(i);
 
-            if( isNum(current) ){
+            if (isNum(current)) {
                 // one digit at a time
                 k = (k * 10) + toNum(current);
-            } else {
+            } else if (current == '[') {
+                ks.addFirst(k);
+                k = 0;
 
-                if( current == '[' ) {
-                    ks.addFirst(k);
-                    k=0;
-                    letters.addFirst(current);
+                letters.addFirst(currentString);
+                currentString = "";
+            } else if (current == ']') {
+                // get the outside letter / previous segment
+                String temp = letters.remove();
+                
+                String repeated = "";
+                multiplier = ks.remove();
 
-                } else if ( current == ']' ) {
-
-                    String temp = "";
-                    String repeated = "";
-                    while ( letters.peek() != null && letters.peek() != '[' ) {
-
-                        temp = letters.remove() + temp;
-                    }
-                    letters.remove();
-
-                    multiplier = ks.remove();
-                    for( int j = 0; j < multiplier; j++) {
-                        repeated = repeated + temp;
-                    }
-
-                    if( ks.peek() == null ) {
-                        result = result + repeated;
-
-                    }  else {
-                        for ( int j = 0; j < repeated.length(); j++) {
-                            letters.addFirst(repeated.charAt(j));
-                        }
-
-                    }
-
-                } else {
-
-                    if( letters.peek() == null){
-                        result = result + current;
-                    } else {
-                        letters.addFirst(current);
-                    }
-
+                for (int j = 0; j < multiplier; j++) {
+                    repeated = repeated + currentString;
                 }
+                // add outside letter / previous sequence to current one
+                currentString = temp + repeated;
+
+            } else {
+                // add to current letter sequence
+                currentString = currentString + current;
 
             }
 
+
         }
 
+        return currentString;
 
-        return result;
     }
 
     public static boolean isNum ( char c) {
