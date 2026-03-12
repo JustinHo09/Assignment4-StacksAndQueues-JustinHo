@@ -28,7 +28,7 @@ public class InToPost {
 
             } else if ( currentChar == ')' ) {
 
-                // runs until ( is met or end is reached, which could be n
+                // runs until ( is met or end is reached, which could be n, max 3
                 while ( operators.peek() != null && operators.peek() != '(' ) {
                     result = result + operators.remove();
                 }
@@ -53,7 +53,7 @@ public class InToPost {
             }
 
         }
-
+        // operators.length < size.length
         while (operators.peek() != null) {
             result = result + operators.remove();
         }
