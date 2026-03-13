@@ -1,7 +1,16 @@
 import java.util.LinkedList;
 
+/**
+ * This method will run tests on some string inputs to decode them given that
+ * they are in the format of number[digit].
+ */
 public class Decode {
 
+    /**
+     * This will run some basic tests on some input strings using the
+     * decoer method and will print the input, and then the decoded string.
+     * @param args User input but not used in this.
+     */
     public static void main(String[] args) {
         String input1 = "3[a]2[bc]";
         System.out.println(input1);
@@ -14,9 +23,17 @@ public class Decode {
         System.out.println(decoder(input3));
     }
 
+    /**
+     * This method will take a string in the format number[letter]
+     * and will decode it so that there be a number amounnt of letter.
+     * @param s The string to decode
+     * @return A decoded string
+     */
     public static String decoder(String s) {
 
+        // keep track of the letters at each bracket
         LinkedList<String> letters = new LinkedList<>();
+        // keep track of hte multiplier for each bracket
         LinkedList<Integer> ks = new LinkedList<>();
         String currentString = "";
         char current;
@@ -27,22 +44,28 @@ public class Decode {
 
             current = s.charAt(i);
 
+            // check if number
             if (isNum(current)) {
                 // one digit at a time
                 k = (k * 10) + toNum(current);
+            // breack means number ends and letter will start
             } else if (current == '[') {
+                // add the number since its done and then reset it for next time
                 ks.addFirst(k);
                 k = 0;
-
+                // add what ever the current string for this set of bracket is to the LL
+                // and reset currentString to build from scratch
                 letters.addFirst(currentString);
                 currentString = "";
+            // the end of hte bracket pair is reached
             } else if (current == ']') {
                 // get the outside letter / previous segment
                 String temp = letters.remove();
                 
                 String repeated = "";
                 multiplier = ks.remove();
-
+                // repeats the current string for this bracket layer
+                // its multiplier amount of times
                 for (int j = 0; j < multiplier; j++) {
                     repeated = repeated + currentString;
                 }
@@ -62,6 +85,12 @@ public class Decode {
 
     }
 
+    /**
+     * This method will take in a character and return if the character is a number
+     * or has a numeric equivalent.
+     * @param c The charcter to check if it is a number.
+     * @return true if it is a number, false if not.
+     */
     public static boolean isNum ( char c) {
 
         if( c == '0' || c ==  '1' || c == '2' || c == '3' || c == '4'
@@ -72,6 +101,11 @@ public class Decode {
         return false;
     }
 
+    /**
+     * This will take in a number character and return its integer equivalent.
+     * @param c The character to get its numeric equivalent.
+     * @return An integer that is the character's equivalment, -1 if not a character 0-9.
+     */
     public static int toNum( char c) {
 
         if( c == '0'){
